@@ -248,6 +248,10 @@ install(DIRECTORY example/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/example
 )
 
+install(DIRECTORY src/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/src
+)
+
 # How I used to get python scripts detected by ROS
 #install(DIRECTORY scripts/
 #  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
