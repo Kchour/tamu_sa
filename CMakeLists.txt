@@ -11,11 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  nav_msgs
-  sensor_msgs
-  geometry_msgs
-  message_generation
-  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -52,11 +47,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   ObjectDetectArray.msg
-   ObjectDetect.msg
- )
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -73,13 +68,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs
-   nav_msgs
-   sensor_msgs
-   geometry_msgs
- )
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -113,7 +105,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES tamu_sa
-  CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
+#  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -124,7 +116,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include
+# include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -171,10 +163,6 @@ include_directories(
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
-
-catkin_install_python(PROGRAMS src/costmap_update.py src/dummy_message.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -232,10 +220,18 @@ install(DIRECTORY launch/
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
    FILES_MATCHING PATTERN "*.launch" PATTERN "*.conf" PATTERN "*.rviz"
 )
-install(DIRECTORY msg/
-   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/msg
-   FILES_MATCHING PATTERN "*.msg"
-)
 
+install(DIRECTORY example/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/example
+  )
 
+install(DIRECTORY scripts/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
+  USE_SOURCE_PERMISSIONS
+  )
 
+ catkin_install_python(PROGRAMS
+   scripts/
+   nodes/
+   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+ )
