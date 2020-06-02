@@ -123,6 +123,8 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
+
+# I Dont think this is necessary
 include_directories(
  include
   ${catkin_INCLUDE_DIRS}
@@ -172,9 +174,10 @@ include_directories(
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
-catkin_install_python(PROGRAMS src/costmap_update.py src/dummy_message.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# I moved these guys to scripts folder for better organization
+#catkin_install_python(PROGRAMS src/costmap_update.py src/dummy_message.py
+#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -225,7 +228,6 @@ install(DIRECTORY rviz/
 install(DIRECTORY map/
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/map
    FILES_MATCHING PATTERN "*.launch" PATTERN "*.yaml" PATTERN "*.pgm" PATTERN "*.sh"
-
 )
 
 install(DIRECTORY launch/
@@ -237,5 +239,19 @@ install(DIRECTORY msg/
    FILES_MATCHING PATTERN "*.msg"
 )
 
+install(DIRECTORY example/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/example
+)
 
+# How I used to get python scripts detected by ROS
+#install(DIRECTORY scripts/
+#  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
+#  USE_SOURCE_PERMISSIONS
+#  )
 
+# New way to get python scripts detected by ROS
+ catkin_install_python(PROGRAMS
+   scripts/
+   nodes/
+   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+ )
