@@ -1,0 +1,101 @@
+<launch>
+  <arg name="name" default="husky" doc="Robot name"/>
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find phoenix_unity_launch)/example/console.conf"/>
+
+  <arg name="environment" default="floodedgrounds" doc="Simulation environment"/>
+  <assert val="$(eval environment in ('floodedgrounds', 'gq', 'lejeune_mout', 'lejeune_emout'))"
+    msg="valid environments are: floodedgrounds, gq, lejeune_mout, lejeune_emout"/>
+  <arg name="use_message_stream_pipeline" default="False" scope="global" />
+  <arg name="use_mppi" default="false" scope="global"/>
+
+  <rosarg subst_value="True">
+    config: $(arg name)
+    # Launch an instance of the ARL Unity Robotics simulator.
+    launch_unity: true
+    object_localization: true
+    simulator:
+
+      simulator_args: ''
+      unity_namespace: Simulation/
+    hardware:
+      # Extra robot configuration information defined in a YAML string.
+      config_yaml: ''
+      # Run in calibration mode; sensor locations become dynamically-reconfigurable.
+      calibrating: false
+    object_detection:
+      # Run detection model against simulated imagery.
+      run_model: false
+      # The camera used for object detection (e.g. forward, auxiliary).
+      camera: forward
+    pixel_classification:
+      # Run detection model against simulated imagery.
+      run_model: false
+      # The camera used for object detection (e.g. forward, auxiliary).
+      camera: forward
+    terrain_projection:
+      use_unity: true
+  </rosarg>
+
+  <rosarg if="$(arg use_message_stream_pipeline)">
+    slam:
+      use_message_stream_pipeline: true
+    pc_assembler: false
+  </rosarg>
+
+  <rosarg if="$(eval environment == 'floodedgrounds')" subst_value="True">
+    x: -1
+    y: -2.7
+    z: 0.0
+    yaw: -1.5
+    param_file: $(find arl_unity_ros)/config/floodedgrounds.yaml
+  </rosarg>
+
+  <rosarg if="$(eval environment == 'gq')" subst_value="True">
+    x: 0
+    y: 0
+    z: 0.4
+    yaw: 1.4
+    param_file: $(find gq_mout)/config/gq_mout.yaml
+  </rosarg>
+
+  <rosarg if="$(eval environment == 'lejeune_mout')" subst_value="True">
+    x: 0
+    y: 0
+    z: 0.0
+    yaw: 0.0
+    param_file: $(find lejeune_mout)/config/lejeune_mout.yaml
+  </rosarg>
+
+  <rosarg if="$(eval environment == 'lejeune_emout')" subst_value="True">
+    x: 0.5
+    y: -16.0
+    z: 0.0
+    yaw: 3.0
+    param_file: $(find lejeune_emout)/config/lejeune_emout.yaml
+  </rosarg>
+
+  <!-- ==================== SLAM_LESS  ==================== -->
+  <!--include argns="*" file="$(find phoenix_unity_launch)/launch/sim.xlaunch" /-->
+  <include argns="*" file="$(find tamu_sa)/example/sim.xlaunch" />
+
+  <include argns="*" file="$(find rcta_launch)/launch/rviz.launch" />
+
+  <!-- Override the defaults, e.g., to drive faster -->
+  <rosparam ns="$(arg name)" subst_value="True">
+  husky_velocity_controller:
+    linear:
+      x:
+        max_acceleration: 20.0
+        max_velocity: 5.0 
+  local_planner:
+    max_vel_x: 4.0
+    max_vel_th: 5.5
+    default_vel_x: 3.0
+    max_accel_x: 5.0
+  terrain_projector:
+    project_to_horizon: true
+  mission_planner:
+    use_maneuver_at_object: false
+  </rosparam>
+
+</launch>
