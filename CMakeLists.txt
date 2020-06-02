@@ -52,11 +52,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   ObjectDetectArray.msg
-   ObjectDetect.msg
- )
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -73,6 +73,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
  generate_messages(
    DEPENDENCIES
    std_msgs
@@ -126,7 +130,7 @@ catkin_package(
 
 # I Dont think this is necessary
 include_directories(
- include
+# include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -228,6 +232,7 @@ install(DIRECTORY rviz/
 install(DIRECTORY map/
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/map
    FILES_MATCHING PATTERN "*.launch" PATTERN "*.yaml" PATTERN "*.pgm" PATTERN "*.sh"
+
 )
 
 install(DIRECTORY launch/

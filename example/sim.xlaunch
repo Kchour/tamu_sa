@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <!-- Hardware configuration -->
+  <arg name="config"
+    doc="Robot platform configuration file to load (e.g. samoyed.yaml)"/>
+  <!-- Load hardware configuration into a 'hardware' namespace -->
+  <rosarg arg="hardware" file="$(find hardware_launch)/config/$(arg config).yaml" subst_value="true"/>
+  <!-- Pull robot name into scope -->
+  <arg name="name" default="$(arg hardware/name)" scope="global"
+    doc="Robot name (e.g. warty, chinook)"/>
+  <!-- Pull robot platform into scope -->
+  <arg name="platform" default="$(arg hardware/platform)" scope="global"
+    doc="Robot type (e.g. warthog, husky)"/>
+
+  <!-- ==================== Simulator ==================== -->
+
+  <!-- Unity configuration -->
+  <arg name="launch_unity" default="true" scope="global"
+    doc="Launch an instance of the ARL Unity Robotics simulator."/>
+  <arg name="param_file" default="$(find arl_unity_ros)/config/floodedgrounds.yaml" scope="global"
+    doc="The ARL Unity Robotics environment to load."/>
+
+  <arg name="x"   default="0"   doc="Starting x-position for robot."/>
+  <arg name="y"   default="0"   doc="Starting y-position for robot."/>
+  <arg name="z"   default="0.4" doc="Starting z-position for robot."/>
+  <arg name="yaw" default="0.0" doc="Starting yaw for robot."/>
+
+  <arg name="simulator" default="true"/>
+  <include argns="simulator" file="$(find arl_unity_ros)/launch/simulator.launch">
+    <arg name="use_manager_node" value="true"/>
+    <arg name="enable_static_tf" value="false"/>
+    <arg name="simulator_args" value="-logFile /tmp/player.log" />
+  </include>
+
+  <!-- Node to spawn our robot from the robot_description -->
+  <node name="$(arg name)_spawner"
+    pkg="phoenix_unity_launch" type="unity_spawn_robot"
+    args="$(arg x) $(arg y) $(arg z) $(arg yaw) $(arg name)"
+    output="screen"/>
+
+  <!-- ==================== Robot Control ==================== -->
+
+  <arg name="control" default="true"/>
+  <include argns="control" file="$(find phoenix_launch)/launch/control.launch"/>
+  <rosparam ns="$(arg name)/$(arg platform)_velocity_controller">
+    type: arl_unity_dd_controller/DiffDriveController
+  </rosparam>
+
+  <!-- ==================== Robot Description ==================== -->
+
+  <include argns="hardware" file="$(find hardware_launch)/launch/description.launch">
+    <arg name="robot_configuration" value="$(find hardware_launch)/config/$(arg config).yaml"/>
+    <arg name="robot_calibration" value="$(find hardware_launch)/calibration/$(arg config).yaml"/>
+  </include>
+
+  <group ns="$(arg name)">
+    <param name="tf_prefix" value="$(arg name)"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+  </group>
+
+  <!-- ==================== Robot Autonomy Stack ==================== -->
+
+  <!-- Redirect some core functions to sim-specific versions -->
+  <rosarg arg="functions">
+    object_detection: $(find perception_unity_launch)/launch/object_detection.launch
+    object_localization: false
+    pixel_classification: $(find perception_unity_launch)/launch/pixel_classification.launch
+  </rosarg>
+  
+  <!-- ==================== SLAM_LESS  ==================== -->
+  <!--include argns="*" file="$(find phoenix_launch)/launch/stack.xlaunch"/-->
+  <include argns="*" file="$(find tamu_sa)/example/stack.xlaunch"/>
+
+
+</launch>

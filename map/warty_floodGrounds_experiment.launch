@@ -1,4 +1,27 @@
 <launch>
-  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tamu_sa)/rviz/config_file.rviz" cwd="node"/>
-  <node type="map_server" name="map_server_node" pkg="map_server" args="$(find tamu_sa)/map/warty_experiment_test.yaml"/>
+  <!--node type="rviz" name="rviz" pkg="rviz" args="-d $(find tamu_sa)/rviz/config_file.rviz" cwd="node"/-->
+  
+  <!-- ================== map_server to publish map ====== --> 
+  <node type="map_server" name="map_server_node_full" pkg="map_server" args="$(find tamu_sa)/map/mymap.yaml">
+	  <!--remap from="map" to="/husky/global_planner/costmap/costmap"/-->
+	  <!--remap from="map" to="/husky/local_point_cloud_cache/renderers/recent_map"/-->
+	  <remap from="map" to="/husky/point_cloud_cache/renderers/full_map"/>
+	  <param name="frame_id" value="husky/map"/>
+  </node>
+  <node type="map_server" name="map_server_node_recent" pkg="map_server" args="$(find tamu_sa)/map/mymap.yaml">
+	  <!--remap from="map" to="/husky/global_planner/costmap/costmap"/-->
+	  <remap from="map" to="/husky/local_point_cloud_cache/renderers/recent_map"/>
+	  <!--remap from="map" to="/husky/point_cloud_cache/renderers/full_map"/-->
+	  <param name="frame_id" value="husky/odom"/>
+  </node>
+  <!--node pkg="topic_tools" type="relay" name="map_relay" args="/husky/point_cloud_cache/renderers/fullmap /husky/local_point_cloud_cache/renderers/recent_map"/-->
+
+  <!-- ================== static_transform  ====== --> 
+  <node pkg="tf2_ros" type="static_transform_publisher" name="priormap_broadcaster" args="0.0 0.0 0.0 0 0 0 husky/map husky/odom"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="odom_baselink_broadcaster" args="0.0 0.0 0.0 0 0 0 husky/odom husky/base"/>
+
+  <!-- =================== topic relay ======== -->
+  <!--node pkg="topic_tools" type="relay" name="vehicle_odom_relay" args="husky/odom /sa_gv_info"/-->
+  <!--node pkg="topic_tools" type="relay" name="vehicle_plan_relay" args="husky/global_planner/global_plan /mapviz/gv_path"/-->
+  <node pkg="tamu_sa" type="republish.py" name="republisher_node"/>
 </launch>
