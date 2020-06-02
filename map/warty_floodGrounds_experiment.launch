@@ -1,0 +1,4 @@
+<launch>
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tamu_sa)/rviz/config_file.rviz" cwd="node"/>
+  <node type="map_server" name="map_server_node" pkg="map_server" args="$(find tamu_sa)/map/warty_experiment_test.yaml"/>
+</launch>
