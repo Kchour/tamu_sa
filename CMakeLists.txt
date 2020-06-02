@@ -52,11 +52,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+ add_message_files(
+   FILES
+   ObjectDetect.msg
+   ObjectDetectArray.msg
+ )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -253,14 +253,14 @@ install(DIRECTORY src/
 )
 
 # How I used to get python scripts detected by ROS
-#install(DIRECTORY scripts/
-#  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
-#  USE_SOURCE_PERMISSIONS
-#  )
+install(DIRECTORY scripts/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
+  USE_SOURCE_PERMISSIONS
+  )
 
 # New way to get python scripts detected by ROS
- catkin_install_python(PROGRAMS
-   scripts/
-   nodes/
-   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
- )
+# catkin_install_python(PROGRAMS
+#   scripts/script1.py
+#   nodes/node1.py
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
