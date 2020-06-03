@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 ''' Independent '''
-from search.search_utils import PriorityQueue
+from .search_utils import PriorityQueue
 import matplotlib.pyplot as plt
 import numpy as np
 import time
-import networkx as nx
 
 ''' Dependecies '''
-from animation.animation import Animate
+from tamu_sa.animation.animation import Animate
 
 
 class Search:
@@ -64,49 +63,6 @@ class AStarSearch(Search):
             dmin = min(abs(x1 - x2), abs(y1 - y2))
             return 1.414*dmin + (dmax - dmin)
     
-    ''' perform one iteration of algorithm '''
-    def iterate_algorithm(self):
-        ''' Usage:
-            - call to step through the algorithm for 1 iteration
-            
-            Returns:
-            - a linked list, 'parent'
-            - and hash table of nodes and associated min cost, 'g'
-        '''
-        frontier = self.frontier
-        parent = self.parent
-        g = self.g  #basically the closed list
-
-        if not frontier.empty():
-            current = frontier.get()  # update current to be the item with best priority
-
-            if self.visualize:
-                # Update plot with visuals
-                self.animateCurrent.update(current)
-            # Exit if we reached our goal
-            if current == self.goal:
-                return parent, g, current
-            # expand current node and check neighbors
-            for next in self.graph.neighbors(current):
-                g_next = g[current] + self.graph.cost(current, next)
-                # if next location not in CLOSED LIST or its cost is less than before
-                # Newer implementation
-                if next not in g or g_next < g[next]:
-                    g[next] = g_next
-                    if self.h_type == 'zero' or self.goal==None:
-                        priority = g_next 
-                    else:
-                        priority = g_next + self.heuristic(self.goal, next, self.h_type)
-                    frontier.put(next, priority)
-                    parent[next] = current
-                   
-                    if self.visualize:
-                        self.animateNeighbors.update(next)
-        else:
-            current = None
-
-        return parent, g, frontier.elements, current    #current is the latest to be put in closed list
-
     def use_algorithm(self):
         ''' Usage:
             - call to runs full algorithm until termination
@@ -152,70 +108,4 @@ class AStarSearch(Search):
         #self.parent = parent
         #self.g = g
         return parent, g
-
-''' Generic Class for depth first search
-    Modified to detect cycles
-'''
-class DepthFirstSearch(Search):
-    def __init__(self, graph, start, visualize=False):
-        Search.__init__(self,graph, start, None)
-        self.visualize = visualize
-
-        self.frontier = PriorityQueue()
-        self.frontier.put(self.start, 0)
-        self.parent = {}
-        self.parent[self.start] = None
-        self.closedList = []    #leaf nodes
-
-        if visualize:
-            self.fig, self.ax = plt.subplots(1,1, num=10)
-            plt.show(block=False)
-            self.nxG = nx.Graph()
-            self.pos = []
-
-    def use_algorithm(self):
-        frontier = self.frontier
-        parent = self.parent
-        g_next = 0
-        visited = []
-        visitedNodes = []
-        isCycle = False
-        
-        while not frontier.empty():
-            current = frontier.get()
-            #ensures we expand unvisited nodes!                 
-            visited.append(current)
-            neighbors = self.graph.neighbors(current)
-            for next in neighbors:
-                g_next -= 1
-                if next not in visited:
-                    priority = g_next
-                    frontier.put(next, priority)
-                    parent[next] = current
-                    # print(current, next, visited)
-
-                    # record nodes visited
-                    #visitedNodes1.append(current)
-                    visitedNodes.append(next)
-
-                    if self.visualize:
-                        self.nxG.add_edge(current, next)
-                        if not self.pos:
-                            self.pos = nx.spring_layout(self.nxG)
-                        else:
-                            self.pos = nx.spring_layout(self.nxG, pos =self.pos, fixed=visited)
-                        self.ax.clear()
-                        nx.draw(self.nxG, ax=self.ax, pos=self.pos, edge_color="blue", with_labels = True)
-                        self.ax.set_xticks([])
-                        self.ax.set_yticks([])
-                        plt.pause(0.0001)
-        # We can check for duplicates in here
-        if len(visitedNodes) != len(set(visitedNodes)):
-           isCycle = True
-        return isCycle
-
-
-class DjikstraSearch():
-    def __init__(self):
-        print("WIP")
 
