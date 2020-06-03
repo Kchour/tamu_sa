@@ -15,6 +15,11 @@ import PIL
 # numpy.set_printoptions(threshold=sys.maxsize)
 
 global x, y, bb_height, bb_width
+# id_number = []
+# x = []
+# y = []
+# bb_height = []
+# bb_width = []
 counter = 0
 node_rate = 5           # in Hz. Determine node speed
 resolution = 0.2        # m.
@@ -42,33 +47,61 @@ bob = 0
 
 
 def callback_objectDetect(msg):
-    global x, y, bb_height, bb_width
+    global id_number, x, y, bb_height, bb_width
+    # id_number = []
+    # x = []
+    # y = []
+    # bb_height = []
+    # bb_width = []
     msg_1 = msg.detections[0]
-    x = msg_1.easting               # in m
-    y = msg_1.northing              # in m
-    bb_height = msg_1.bb_height     # in m
-    bb_width = msg_1.bb_width       # in m
+    x = msg_1.easting
+    y = msg_1.northing
+    bb_height = msg_1.bb_height
+    bb_width = msg_1.bb_width
+
+    # for i in msg.detections:
+    #     # msg_i = msg.detections[i]
+        # id_number = id_number.append(i.id)
+        # x = x.append(i.easting)              # in m
+        # y = y.append(i.northing)              # in m
+        # bb_height = bb_height.append(i.bb_height)     # in m
+        # bb_width = bb_width.append(i.bb_width)       # in m
 
 
 def main():
     global x, y, bb_height, bb_width
+    global counter
+    global bob
+
     rospy.Subscriber("sa_to_costmap", ObjectDetectArray, callback_objectDetect)         # 5 Hz
     costmap_pub = rospy.Publisher("tamu_sa/global_costmap",OccupancyGrid, queue_size=1) # 5 Hz
     rospy.init_node("global_costmap")
     rate = rospy.Rate(node_rate)
     costmap_msg = OccupancyGrid()
-    global counter
-    global bob
-
 
     while not rospy.is_shutdown():
-        costmap = costmap_initial.flatten('C')
 
+        # if x is not None:
+        object_array_row_index = int(y/resolution)
+        object_array_col_index = int(x/resolution)
+
+        object_left_side = object_array_col_index - int(bb_width/2)
+        object_right_side = object_array_col_index + int(bb_width/2)
+        object_bottom_side = object_array_row_index - int(bb_height/2)
+        object_top_side = object_array_row_index + int(bb_height/2)
+
+        for row in range(object_bottom_side, object_top_side+1):
+            for col in range(object_left_side, object_right_side+1):
+                costmap_initial[row, col] = 120
+                    # print(numpy.shape(costmap_initial))
+                    # print('Row:', row)
+                    # print('Col:', col)
+
+        costmap = costmap_initial.flatten('C')
         # costmap = 100 - (costmap/(numpy.amax(costmap)) * 100)
 
-        costmap = costmap
+        # costmap = costmap
         costmap = costmap.astype(int)
-
 
         costmap_msg.header.seq = counter
         costmap_msg.header.stamp  = rospy.get_rostime()
@@ -79,8 +112,8 @@ def main():
 
         # costmap_msg.info.origin.position.x = 48.500002
         # costmap_msg.info.origin.position.y = 148.900003
-        costmap_msg.info.origin.position.x = 48.5
-        costmap_msg.info.origin.position.y = 100
+        costmap_msg.info.origin.position.x = -100
+        costmap_msg.info.origin.position.y = -200
         costmap_msg.info.origin.position.z = 0
         quaternion = tf.transformations.quaternion_from_euler(0,0,0)
         costmap_msg.info.origin.orientation.x = quaternion[0]
@@ -92,7 +125,6 @@ def main():
         costmap_pub.publish(costmap_msg)
 
         if bob == 0:
-            # print(costmap_initial)
             print(numpy.sum(costmap))
             print('77 index:', itemindex77)
             print('100 index:', itemindex100)
@@ -105,9 +137,7 @@ def main():
             print('Width:', costmap_shape[1] * resolution)
             print ('Easting:', x)
 
-
             bob = bob + 1    
-        # print(numpy.sum(costmap))
 
         counter = counter+1
         rate.sleep
