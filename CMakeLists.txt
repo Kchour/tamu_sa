@@ -258,6 +258,10 @@ install(DIRECTORY scripts/
   USE_SOURCE_PERMISSIONS
   )
 
+install(DIRECTORY tests/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/tests
+  USE_SOURCE_PERMISSIONS
+  )
 # New way to get python scripts detected by ROS
 # catkin_install_python(PROGRAMS
 #   scripts/script1.py

@@ -8,6 +8,7 @@ import time
 ''' Dependecies '''
 from tamu_sa.animation.animation import Animate
 
+import pdb
 
 class Search:
     def __init__(self, graph, start, goal):
@@ -49,6 +50,12 @@ class AStarSearch(Search):
 
     ''' heuristic function '''
     def heuristic(self, a, b, type_='manhattan'):
+        '''
+        General Idea
+        4 neighbors:    manhattan
+        8 neighbors:    diagonal
+        any direction:  euclidean
+        '''
         (x1, y1) = a
         (x2, y2) = b
         if type_ == 'manhattan':

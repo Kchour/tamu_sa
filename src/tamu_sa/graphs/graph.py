@@ -13,6 +13,8 @@ import numpy as np
 from .grid_utils import init_grid
 from .grid_utils import get_index
 from .grid_utils import get_world
+
+import pdb
 class SquareGrid:
     def __init__(self, grid, grid_dim, grid_size, type_=4):
         self.xwidth = grid_dim[1] - grid_dim[0]
@@ -33,10 +35,13 @@ class SquareGrid:
         else:
             # grid indices
             (indx, indy) = ind
-            return 0 <= indx <= self.xwidth and 0 <= indy <= self.yheight
+            xcells = int(np.ceil((self.xwidth + 1) / self.grid_size))
+            ycells = int(np.ceil((self.yheight + 1) / self.grid_size))
+            return 0 <= indx <= xcells and 0 <= indy <= ycells
 
     def not_obstacles(self, ind):
         (indx, indy) = ind
+        # may have issues in the future...
         return self.grid[indy, indx] == 0
 
     def neighbors(self, xxx_todo_changeme):
