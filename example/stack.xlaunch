@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <arg name="name" scope="global"/>
+
+  <rosarg arg="functions">
+    # === Perception functions ===
+    object_detection: $(find perception_launch)/launch/object_detection.launch
+    object_localization: $(find perception_launch)/launch/object_localization.launch
+    # object_pose_estimation
+    object_tracking: $(find perception_launch)/launch/object_tracking.launch
+    # mover_detection
+    # mover_prediction
+    pixel_classification: $(find perception_launch)/launch/pixel_classification.launch
+
+    object_fusion: $(find perception_launch)/launch/object_fusion.launch
+
+    # === Intelligence functions ===
+    intelligence: $(find intelligence_launch)/launch/intelligence.launch
+    navigation_behaviors: $(find intelligence_launch)/launch/navigation_behaviors.launch
+
+    # === Mapping functions ===
+    odometry: $(find estimation_launch)/launch/odometry.launch
+    #slam: $(find mapping_launch)/launch/omnimapper_3d.launch
+    pc_assembler: $(find mapping_launch)/launch/pc_assembler.launch
+
+    terrain_projection: $(find perception_launch)/launch/terrain_projection.launch
+
+    # === Navigation functions ===
+    waypoint_navigation: $(find navigation_launch)/launch/waypoint_navigation.launch
+    # ioc_traversal
+    # social navigation
+  </rosarg>
+
+  <rosarg subst_value="True">
+    pc_assembler:
+      input_topic: lidar_points
+    waypoint_navigation:
+      map_topic: point_cloud_cache/renderers/full_map
+      use_joy: false
+
+    terrain_projection:
+      image_topic: /$(arg name)/forward/pixel_classification/semantic_image
+  </rosarg>
+
+  <for key="function" value="launch" in="functions">
+    <arg name="$(arg function)" default="$(eval bool(launch))"/>
+    <include if="$(eval launch and argns(function))" argns="$(arg function)" file="$(arg launch)"/>
+  </for>
+
+  <rosparam ns="$(arg name)" subst_value="True">
+  omnigraph:
+    frame_id: $(arg name)/map
+
+  navigation_manager:
+    global_frame: $(arg name)/map
+
+  odom_frame: $(arg name)/odom
+  base_frame: $(arg name)/base
+  discrete_objects_cache:
+    static_frame: $(arg name)/odom
+    base_frame: $(arg name)/base
+  </rosparam>
+
+</launch>

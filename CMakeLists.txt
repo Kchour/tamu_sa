@@ -25,7 +25,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -54,8 +54,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   ObjectDetectArray.msg
    ObjectDetect.msg
+   ObjectDetectArray.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -73,6 +73,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
  generate_messages(
    DEPENDENCIES
    std_msgs
@@ -112,7 +116,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES tamu_sa
+  LIBRARIES tamu_sa
   CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
 #  DEPENDS system_lib
 )
@@ -123,8 +127,10 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
+
+# I Dont think this is necessary
 include_directories(
- include
+# include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -172,9 +178,10 @@ include_directories(
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
-catkin_install_python(PROGRAMS src/costmap_update.py src/dummy_message.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# I moved these guys to scripts folder for better organization
+#catkin_install_python(PROGRAMS src/costmap_update.py src/dummy_message.py
+#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -237,5 +244,27 @@ install(DIRECTORY msg/
    FILES_MATCHING PATTERN "*.msg"
 )
 
+install(DIRECTORY example/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/example
+)
 
+install(DIRECTORY src/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/src
+)
 
+# How I used to get python scripts detected by ROS
+install(DIRECTORY scripts/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
+  USE_SOURCE_PERMISSIONS
+  )
+
+install(DIRECTORY tests/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/tests
+  USE_SOURCE_PERMISSIONS
+  )
+# New way to get python scripts detected by ROS
+# catkin_install_python(PROGRAMS
+#   scripts/script1.py
+#   nodes/node1.py
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )

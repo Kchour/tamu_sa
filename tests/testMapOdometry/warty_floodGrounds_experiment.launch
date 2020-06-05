@@ -22,5 +22,8 @@
 
   <!-- =================== rviz ======== -->
   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tamu_sa)/rviz/config_file.rviz" cwd="node"/>
-  
+
+
+  <!-- =================== fake odom ======== -->
+  <node pkg="tamu_sa" type="fake_odom.py" name="fake_odom_node"/>
 </launch>
