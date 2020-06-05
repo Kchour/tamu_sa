@@ -23,6 +23,10 @@ from nav_msgs.msg import OccupancyGrid, Path, Odometry
 import time
 import pdb
 
+
+# Debug
+import matplotlib.pyplot as plt
+
 class PathPlannerNode:
     def __init__(self):
 
@@ -38,6 +42,8 @@ class PathPlannerNode:
         self.subOdom = rospy.Subscriber("/husky/odom", Odometry, self.callback_Odom)
         self.pubPath = rospy.Publisher("test/path", Path, queue_size=1, latch=True)
 
+
+
     def get_plan(self):
         '''
         Applies Astar algorithm and returns a linked list 'parent' and cost hash table g
@@ -50,13 +56,25 @@ class PathPlannerNode:
         ind = get_index(self.odom[0], self.odom[1], self.grid_size, self.grid_dim)
         odomFilt = get_world(ind[0], ind[1], self.grid_size, self.grid_dim)
 
-        # Create Search object and use it! Also Time it
-        self.searchSA = AStarSearch(self.squareGridGraph, odomFilt, goalFilt, h_type='euclidean', inflation=5.0, visualize=True)
+        # Create Search object and use it! Also Time it. Reverse Search Direction
+        self.searchSA = AStarSearch(self.squareGridGraph, odomFilt, goalFilt, h_type='euclidean', inflation=5.0, visualize=False)
+
+         # debug
+        if self.searchSA.visualize:
+            self.fig = plt.figure(1)
+            self.ax = self.fig.gca()
+            plt.axis('equal')
+            self.ax.clear()
+            self.im = self.ax.imshow(self.ogrid, origin='lower', extent=[self.minX, self.maxX, self.minY, self.maxY])
+
         startTime = time.time()                                         #Start timer
         self.parents, self.g = self.searchSA.use_algorithm()
         self.path = reconstruct_path(self.parents, odomFilt, goalFilt)
         finishTime = time.time() - startTime                            #get finish time
-               
+
+       
+
+
         # Create Path msg and pack in data from solution
         self.pathMsg = Path()
         self.pathMsg.header.seq = self.planCounter
@@ -145,14 +163,6 @@ if __name__=="__main__":
         rospy.init_node("planner_test_node")
         ppn = PathPlannerNode()
 
-        # Debug
-        import matplotlib.pyplot as plt
-        fig = plt.figure()
-        ax = fig.gca()
-        im = ax.imshow(ppn.ogrid, origin='lower', extent=[ppn.minX, ppn.maxX, ppn.minY, ppn.maxY])
-        plt.axis('equal')
-        #fig.canvas.draw() 
-        #plt.show(block=False)
         plt.show()
 
         rospy.spin()
