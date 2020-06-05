@@ -62,7 +62,7 @@ class Queue:
 #         return best_item
 
 
-''' Priority Queue with heapq '''
+''' Priority Queue with heapq. Thanks RedBlob '''
 import heapq
 
 class PriorityQueue:
@@ -82,6 +82,8 @@ class PriorityQueue:
 ''' post-processing utility functions'''
 
 def reconstruct_path(parents, start, goal, order='forward'):
+    # parents are now in index
+    
     current = goal
     path = []
     while current != start:

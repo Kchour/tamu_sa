@@ -14,14 +14,13 @@ from tamu_sa.graphs.graph import SquareGrid
 from tamu_sa.graphs.ogm import OccupancyGridMap
 from tamu_sa.graphs.grid_utils import get_index
 from tamu_sa.graphs.grid_utils import get_world
-from tamu_sa.graphs.grid_utils import rebin
-from tamu_sa.graphs.grid_utils import bin_ndarray
-
 
 import numpy as np
 import rospy
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import OccupancyGrid, Path, Odometry
+
+import time
 import pdb
 
 class PathPlannerNode:
@@ -43,7 +42,6 @@ class PathPlannerNode:
         '''
         Applies Astar algorithm and returns a linked list 'parent' and cost hash table g
         '''
-
         # Need to find the nearest cell in grid
         ind = get_index(self.goalPoint[0], self.goalPoint[1], self.grid_size, self.grid_dim)
         goalFilt = get_world(ind[0], ind[1], self.grid_size, self.grid_dim)
@@ -52,11 +50,13 @@ class PathPlannerNode:
         ind = get_index(self.odom[0], self.odom[1], self.grid_size, self.grid_dim)
         odomFilt = get_world(ind[0], ind[1], self.grid_size, self.grid_dim)
 
-        # Create Search object and use it!
-        self.searchSA = AStarSearch(self.squareGridGraph, odomFilt, goalFilt, h_type='manhattan', inflation=5.0, visualize=True)
+        # Create Search object and use it! Also Time it
+        self.searchSA = AStarSearch(self.squareGridGraph, odomFilt, goalFilt, h_type='euclidean', inflation=5.0, visualize=True)
+        startTime = time.time()                                         #Start timer
         self.parents, self.g = self.searchSA.use_algorithm()
         self.path = reconstruct_path(self.parents, odomFilt, goalFilt)
-        
+        finishTime = time.time() - startTime                            #get finish time
+               
         # Create Path msg and pack in data from solution
         self.pathMsg = Path()
         self.pathMsg.header.seq = self.planCounter
@@ -76,7 +76,7 @@ class PathPlannerNode:
         self.pubPath.publish(self.pathMsg)
         self.planCounter+=1
         
-        print("GOT A NEW PLAN!")
+        print("GOT A NEW PLAN in %f secs" % finishTime)
 
     def callback_Odom(self, msg):
         '''
@@ -94,8 +94,6 @@ class PathPlannerNode:
         '''
         # Get prefiltered goal point
         self.goalPoint = (msg.pose.position.x, msg.pose.position.y)
-
-      
 
         #print
         print("GOT A NEW GOAL POINT", self.goalPoint)
@@ -136,7 +134,7 @@ class PathPlannerNode:
         #self.ogrid = bin_ndarray(self.ogrid, (msg.info.height//factor, msg.info.width//factor))
         
         # use SquareGrid class
-        self.squareGridGraph = SquareGrid(self.ogrid, grid_dim=self.grid_dim, grid_size=self.grid_size, type_=4)
+        self.squareGridGraph = SquareGrid(self.ogrid, grid_dim=self.grid_dim, grid_size=self.grid_size, type_=8)
 
         print("GOT A NEW MAP")
         # (class graph, tuple start, tuple goal, string h_type, bool visualize)

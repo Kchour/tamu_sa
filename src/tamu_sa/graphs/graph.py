@@ -39,36 +39,56 @@ class SquareGrid:
             ycells = int(np.ceil((self.yheight + 1) / self.grid_size))
             return 0 <= indx <= xcells and 0 <= indy <= ycells
 
-    def not_obstacles(self, ind):
-        (indx, indy) = ind
-        # may have issues in the future...
-        return self.grid[indy, indx] == 0
+    def not_obstacles(self, ind, type_='map'):
+        if type_ == 'map':
+            (indx, indy) = ind
+            # may have issues in the future...
+            return self.grid[indy, indx] == 0
+        else:
+            # convert world to ind first
+            (indx, indy) = get_index(ind[0], ind[1], self.grid_size, self.grid_dim)
+            return self.grid[indy, indx] == 0
 
     def neighbors(self, xxx_todo_changeme):
+        ''' modified to do less converting, stay in world frame'''
         # Convert world coordinates to indices
-        (x, y) = xxx_todo_changeme
-        (indx, indy) = get_index(x, y, self.grid_size, self.grid_dim)
-        if self.neighbor_type == 4:
-            results = [(indx + 1, indy), (indx, indy - 1),
-                       (indx - 1, indy), (indx, indy + 1)]
-        elif self.neighbor_type == 8:
-            results = [(indx + 1, indy), (indx, indy - 1),
-                       (indx - 1, indy), (indx, indy + 1),
-                       (indx + 1, indy + 1), (indx + 1, indy - 1),
-                       (indx - 1, indy - 1), (indx - 1, indy + 1)]
-        # Only return indices that are in range
-        results = filter(self.in_bounds, results)
+        # (x, y) = xxx_todo_changeme
+        # (indx, indy) = get_index(x, y, self.grid_size, self.grid_dim)
+        # (indx, indy) = xxx_todo_changeme
+        # if self.neighbor_type == 4:
+        #     results = [(indx + 1, indy), (indx, indy - 1),
+        #                (indx - 1, indy), (indx, indy + 1)]
+        # elif self.neighbor_type == 8:
+        #     results = [(indx + 1, indy), (indx, indy - 1),
+        #                (indx - 1, indy), (indx, indy + 1),
+        #                (indx + 1, indy + 1), (indx + 1, indy - 1),
+        #                (indx - 1, indy - 1), (indx - 1, indy + 1)]
 
-        # Only return results that are not obstacles
-        results = filter(self.not_obstacles, results)
-        # convert results to world coordinates
-        results = map(
-            lambda v: get_world(
-                v[0],
-                v[1],
-                self.grid_size,
-                self.grid_dim),
-            results)
+        (x, y) = xxx_todo_changeme
+        if self.neighbor_type == 4:
+            results = [(x + self.grid_size, y), (x, y - self.grid_size),
+                       (x - self.grid_size, y), (x, y + self.grid_size)]
+        elif self.neighbor_type == 8:
+            results = [(x + self.grid_size, y), (x, y - self.grid_size),
+                       (x - self.grid_size, y), (x, y + self.grid_size),
+                       (x + self.grid_size, y + self.grid_size), (x + self.grid_size, y - self.grid_size),
+                       (x - self.grid_size, y - self.grid_size), (x - self.grid_size, y + 1)]
+
+
+        # Only return coordinates that are in range
+        results = filter(lambda x: self.in_bounds(x, type_='world'), results)
+
+        # Only return coordinates that are not obstacles
+        results = filter(lambda x: self.not_obstacles(x, type_='world'), results)
+
+        ## convert results to world coordinates
+        # results = map(
+        #     lambda v: get_world(
+        #         v[0],
+        #         v[1],
+        #         self.grid_size,
+        #         self.grid_dim),
+        #     results)
         return results
 
     # Cost of moving from one node to another (edge cost)
@@ -88,6 +108,7 @@ class MyGraph:
 
 		g = MyGraph()
         '''
+        # TODO Consider creating an adjaceny list, to make finding neighbors faster
         self.edge_dict = edge_dict 
 
     def update(self, edge_dict):

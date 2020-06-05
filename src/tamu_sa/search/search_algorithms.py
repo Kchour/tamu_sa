@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 ''' Independent '''
 from .search_utils import PriorityQueue
+from tamu_sa.graphs.grid_utils import get_index
+from tamu_sa.graphs.grid_utils import get_world
 import matplotlib.pyplot as plt
 import numpy as np
 import time
@@ -43,6 +45,8 @@ class AStarSearch(Search):
             # initialize plot (graph has the dimensions built it)
             xlim = (graph.grid_dim[0], graph.grid_dim[1])   #(minX, maxX)
             ylim = (graph.grid_dim[2], graph.grid_dim[3])   #(minY, maxY)
+            self.grid_size = graph.grid_size
+            self.grid_dim = (xlim[0], xlim[1], ylim[0], ylim[1])
             # 50 millisecond sleep
             self.animateCurrent = Animate(number=1, xlim=xlim, ylim=ylim, gridSize=1,linewidth=5, markerType='xc', markerSize=10, sleep=0.000, order=10)
             self.animateNeighbors = Animate(number=1, xlim=xlim, ylim=ylim, gridSize=1,linewidth=5, markerType='o', markerSize=5, sleep=0.000, order=-1)
@@ -90,6 +94,8 @@ class AStarSearch(Search):
             if self.visualize:
                 # Update plot with visuals
                 self.animateCurrent.update(current)
+                #self.animateCurrent.update(get_world(current[0], current[1], self.grid_size, self.grid_dim))
+
             # early exit if we reached our goal
             if current == self.goal:
                 break
@@ -109,6 +115,7 @@ class AStarSearch(Search):
 
                     if self.visualize:
                         self.animateNeighbors.update(next)
+                        #self.animateNeighbors.update(get_world(next[0], next[1], self.grid_size, self.grid_dim))
 
         #if self.visualize:
         #    fig.canvas.flush_events()
