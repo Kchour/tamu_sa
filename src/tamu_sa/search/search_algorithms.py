@@ -23,9 +23,10 @@ class Search:
         self.goal = goal
 
 class AStarSearch(Search):
-    def __init__(self, graph, start, goal, h_type, visualize=False):
+    def __init__(self, graph, start, goal, h_type, inflation = 1.0, visualize=False):
         Search.__init__(self, graph, start, goal)
         self.h_type = h_type
+        self.inflation = inflation
         self.visualize = visualize
 
         # A star initialize openList, closedList
@@ -102,7 +103,7 @@ class AStarSearch(Search):
                     if self.h_type == 'zero' or self.goal == None:
                         priority = g_next 
                     else:
-                        priority = g_next + self.heuristic(self.goal, next, self.h_type)
+                        priority = g_next + self.inflation*self.heuristic(self.goal, next, self.h_type)
                     frontier.put(next, priority)
                     parent[next] = current
 

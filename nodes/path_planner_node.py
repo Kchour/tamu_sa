@@ -14,6 +14,9 @@ from tamu_sa.graphs.graph import SquareGrid
 from tamu_sa.graphs.ogm import OccupancyGridMap
 from tamu_sa.graphs.grid_utils import get_index
 from tamu_sa.graphs.grid_utils import get_world
+from tamu_sa.graphs.grid_utils import rebin
+from tamu_sa.graphs.grid_utils import bin_ndarray
+
 
 import numpy as np
 import rospy
@@ -50,7 +53,7 @@ class PathPlannerNode:
         odomFilt = get_world(ind[0], ind[1], self.grid_size, self.grid_dim)
 
         # Create Search object and use it!
-        self.searchSA = AStarSearch(self.squareGridGraph, odomFilt, goalFilt, h_type='manhattan', visualize=True)
+        self.searchSA = AStarSearch(self.squareGridGraph, odomFilt, goalFilt, h_type='manhattan', inflation=5.0, visualize=True)
         self.parents, self.g = self.searchSA.use_algorithm()
         self.path = reconstruct_path(self.parents, odomFilt, goalFilt)
         
@@ -124,6 +127,13 @@ class PathPlannerNode:
         # store some pertinent values for reuse
         self.grid_dim = (self.minX, self.maxX, self.minY, self.maxY)
         self.grid_size = msg.info.resolution
+
+        # ================== Consider Rebinning here ========================#
+        
+        #factor = 2
+        # newShape = (msg.info.height//factor, msg.info.width//factor)
+        # rebin(self.ogrid, newShape)        
+        #self.ogrid = bin_ndarray(self.ogrid, (msg.info.height//factor, msg.info.width//factor))
         
         # use SquareGrid class
         self.squareGridGraph = SquareGrid(self.ogrid, grid_dim=self.grid_dim, grid_size=self.grid_size, type_=4)

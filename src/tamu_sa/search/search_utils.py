@@ -38,28 +38,46 @@ class Queue:
         return self.elements.popleft()
 
 
+# class PriorityQueue:
+#     def __init__(self):
+#         self.elements = {}
+
+#     def empty(self):
+#         return len(self.elements) == 0
+
+#     def put(self, item, priority):
+#         self.elements[item] = priority
+
+#     def get(self):
+#         # Iterate through dictionary to find the item with the best priority
+#         best_item, best_priority = None, None
+#         for item, priority in self.elements.items():
+#             if best_priority is None or priority < best_priority:
+#                 best_item, best_priority = item, priority
+
+#         # Remove the best item from the OPEN LIST
+#         del self.elements[best_item]
+
+#         # return
+#         return best_item
+
+
+''' Priority Queue with heapq '''
+import heapq
+
 class PriorityQueue:
     def __init__(self):
-        self.elements = {}
-
+        self.elements = []
+    
     def empty(self):
         return len(self.elements) == 0
-
+    
     def put(self, item, priority):
-        self.elements[item] = priority
-
+        heapq.heappush(self.elements, (priority, item))
+    
     def get(self):
-        # Iterate through dictionary to find the item with the best priority
-        best_item, best_priority = None, None
-        for item, priority in self.elements.items():
-            if best_priority is None or priority < best_priority:
-                best_item, best_priority = item, priority
+        return heapq.heappop(self.elements)[1]
 
-        # Remove the best item from the OPEN LIST
-        del self.elements[best_item]
-
-        # return
-        return best_item
 
 ''' post-processing utility functions'''
 
