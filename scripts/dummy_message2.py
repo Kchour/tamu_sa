@@ -18,23 +18,23 @@ def main():
 
     costmap_msg = ObjectDetectArray()
 
-    cur_det = ObjectDetect()
-    cur_det.easting = 100
-    cur_det.northing = 300
-    cur_det.id = 134
-    cur_det.bb_height = 25
-    cur_det.bb_width = 25
-    cur_det.obj_confidence = 1
-    costmap_msg.detections.append(cur_det)
+    # cur_det = ObjectDetect()
+    # cur_det.easting = 100
+    # cur_det.northing = 300
+    # cur_det.id = 134
+    # cur_det.bb_height = 25
+    # cur_det.bb_width = 25
+    # cur_det.obj_confidence = 1
+    # costmap_msg.detections.append(cur_det)
 
-    cur_det2 = ObjectDetect()
-    cur_det2.easting = 100
-    cur_det2.northing = 100
-    cur_det2.id = 2
-    cur_det2.bb_height = 10
-    cur_det2.bb_width = 30
-    cur_det2.obj_confidence = 1
-    costmap_msg.detections.append(cur_det2)
+    # cur_det2 = ObjectDetect()
+    # cur_det2.easting = 100
+    # cur_det2.northing = 100
+    # cur_det2.id = 2
+    # cur_det2.bb_height = 10
+    # cur_det2.bb_width = 30
+    # cur_det2.obj_confidence = 1
+    # costmap_msg.detections.append(cur_det2)
 
 
 
