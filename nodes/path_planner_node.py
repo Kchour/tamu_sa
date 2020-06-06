@@ -72,9 +72,6 @@ class PathPlannerNode:
         self.path = reconstruct_path(self.parents, odomFilt, goalFilt)
         finishTime = time.time() - startTime                            #get finish time
 
-       
-
-
         # Create Path msg and pack in data from solution
         self.pathMsg = Path()
         self.pathMsg.header.seq = self.planCounter

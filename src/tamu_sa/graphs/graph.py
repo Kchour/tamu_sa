@@ -72,7 +72,7 @@ class SquareGrid:
             results = [(x + self.grid_size, y), (x, y - self.grid_size),
                        (x - self.grid_size, y), (x, y + self.grid_size),
                        (x + self.grid_size, y + self.grid_size), (x + self.grid_size, y - self.grid_size),
-                       (x - self.grid_size, y - self.grid_size), (x - self.grid_size, y + 1)]
+                       (x - self.grid_size, y - self.grid_size), (x - self.grid_size, y + self.grid_size)]
 
 
         # Only return coordinates that are in range
