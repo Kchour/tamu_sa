@@ -14,6 +14,7 @@ from tamu_sa.graphs.graph import SquareGrid
 from tamu_sa.graphs.ogm import OccupancyGridMap
 from tamu_sa.graphs.grid_utils import get_index
 from tamu_sa.graphs.grid_utils import get_world
+from tamu_sa.graphs.grid_utils import pooling
 
 import numpy as np
 import rospy
@@ -137,10 +138,6 @@ class PathPlannerNode:
         self.minY = self.origin[1]
         self.maxY = msg.info.resolution * msg.info.height + self.origin[1] - 1
         
-        # store some pertinent values for reuse
-        self.grid_dim = (self.minX, self.maxX, self.minY, self.maxY)
-        self.grid_size = msg.info.resolution
-
         # ================== Consider Rebinning here ========================#
         
         #factor = 2
@@ -148,6 +145,15 @@ class PathPlannerNode:
         # rebin(self.ogrid, newShape)        
         #self.ogrid = bin_ndarray(self.ogrid, (msg.info.height//factor, msg.info.width//factor))
         
+        newRes = 1
+        ksize = np.round(newRes/msg.info.resolution).astype(int)
+        self.ogrid = pooling(self.ogrid, (ksize, ksize), pad=True)
+
+        # store some pertinent values for reuse
+        self.grid_dim = (self.minX, self.maxX, self.minY, self.maxY)
+        #self.grid_size = msg.info.resolution
+        self.grid_size = newRes     
+      
         # use SquareGrid class
         self.squareGridGraph = SquareGrid(self.ogrid, grid_dim=self.grid_dim, grid_size=self.grid_size, type_=8)
 
