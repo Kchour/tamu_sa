@@ -1,3 +1,0 @@
-<launch>
-	<node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_map_to_global_map" args="-50 50 2 0 0 0 map wart/map"/>
-</launch>

@@ -8,7 +8,6 @@ Panels:
         - /Status1
         - /Map1
         - /Path1
-        - /Path1/Status1
       Splitter Ratio: 0.5
     Tree Height: 737
   - Class: rviz/Selection
@@ -86,6 +85,16 @@ Visualization Manager:
       Topic: /test/path
       Unreliable: false
       Value: true
+    - Alpha: 0.699999988
+      Class: rviz/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic: /test/full_map
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -111,25 +120,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 153.087296
+      Distance: 269.062317
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 137.425629
-        Y: -60.2541313
-        Z: 7.04192257
+        X: 133.602676
+        Y: -60.6161308
+        Z: 14.7300024
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.26039755
+      Pitch: 1.56979632
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.60858345
+      Yaw: 4.69858503
     Saved: ~
 Window Geometry:
   Displays:
