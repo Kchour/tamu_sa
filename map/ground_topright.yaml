@@ -1,0 +1,7 @@
+image: ground_topright.pgm
+resolution: 0.250000
+origin: [421.250000, -63.000000, -nan]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+
