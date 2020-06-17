@@ -232,7 +232,6 @@ install(DIRECTORY rviz/
 install(DIRECTORY map/
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/map
    FILES_MATCHING PATTERN "*.launch" PATTERN "*.yaml" PATTERN "*.pgm" PATTERN "*.sh"
-
 )
 
 install(DIRECTORY launch/
@@ -255,6 +254,11 @@ install(DIRECTORY src/
 # How I used to get python scripts detected by ROS
 install(DIRECTORY scripts/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts
+  USE_SOURCE_PERMISSIONS
+  )
+
+install(DIRECTORY nodes/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/nodes
   USE_SOURCE_PERMISSIONS
   )
 

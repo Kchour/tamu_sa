@@ -128,15 +128,15 @@ class PathPlannerNode:
             #fullmap[ind[1], ind[0]]
             # Maskbit true if an obstacle (100) and  TODO beyond some distance
             #mask = (fullmap[ind[1], ind[0]]==100)
-            mask = np.diff(fullmap[indy, indx]==100, prepend=False)
+            mask = np.diff(fullmap[indy, indx]>=100, prepend=False)
             maskTrueInd = np.where(mask==True)
-            offset = 10      # in terms of index
+            offset = 20      # in terms of index
             try:
                 if len(maskTrueInd[0]) > 0:
                     # TODO: Find a better way to modify the indCor here to be further away
                     offsetMask = np.zeros_like(mask)
                     offsetMaskInd = [np.clip(maskTrueInd[0][0] - offset, 0, len(mask)-1 ), np.clip(maskTrueInd[0][1]+offset, 0, len(mask)-1)]
-
+		    
                     offsetMask[offsetMaskInd] = True
                     # Stack indices
                     #indCor = np.vstack((indx[mask],indy[mask])).T
@@ -153,7 +153,9 @@ class PathPlannerNode:
                     #maskTrue = np.where(mask==True)
 
                     # introduce for loop for multiple obstacles (each obstacle has an entering and exiting segment) (each obstacle has 2 trues)
-                    startPoint = (worldCorX[0], worldCorY[0])
+                    #startPoint = (worldCorX[0], worldCorY[0])
+                    startInd = get_index(self.odom[0], self.odom[1], self.grid_size, self.grid_dim)
+                    startPoint = get_world(startInd[0], startInd[1], self.grid_size, self.grid_dim)
                     goalPoint = (worldCorX[1], worldCorY[1])
 
                     # Then replan if needed
@@ -166,12 +168,16 @@ class PathPlannerNode:
                     # insert new segment into global path
                     # self.path[maskTrueInd[0][0]:maskTrueInd[0][1], :] = np.nan
                     # self.path = np.insert(self.path, maskTrueInd[0][0]+1, newSegment, 0)     
-                    self.path[offsetMaskInd[0]:offsetMaskInd[1], :] = np.nan
-                    self.path = np.insert(self.path, offsetMaskInd[0]+1, newSegment, 0)    
-                    self.path =  self.path[~np.isnan(self.path).any(axis=1)]            #remove nans
+                    #self.path[offsetMaskInd[0]:offsetMaskInd[1], :] = np.nan
+                    #self.path = np.insert(self.path, offsetMaskInd[0]+1, newSegment, 0)    
+                    #self.path =  self.path[~np.isnan(self.path).any(axis=1)]            #remove nans
+                    self.path = np.vstack((newSegment, self.path[offsetMaskInd[1]:-1]))
                     self.publish_path(self.path)
+
+#		    self.publish_path(newSegment)
                     self.planCounter += 1
-                    print(self.planCounter, "REPLANNING")
+                    #print(self.planCounter, "REPLANNING")
+		    #print(maskTrueInd)
             except Exception as err:
                 print(err)
                 pdb.set_trace()
@@ -259,6 +265,9 @@ class PathPlannerNode:
         self.minY = self.origin[1]
         self.maxY = msg.info.resolution * msg.info.height + self.origin[1] - 1
         
+         # Set all unknowns (-1) to occupied (100)
+        self.sgrid[(self.sgrid==-1)] = 100
+
         # ================== Consider Rebinning here ========================#
         
         #factor = 2
