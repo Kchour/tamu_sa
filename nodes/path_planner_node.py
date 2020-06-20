@@ -25,6 +25,8 @@ from tamu_sa.msg import ObjectDetectArray, ObjectDetect
 
 import time
 import pdb
+from threading import Thread, Lock
+mutex = Lock()
 
 # Debug
 import matplotlib.pyplot as plt
@@ -188,6 +190,7 @@ class PathPlannerNode:
         Applies Astar algorithm and returns a linked list 'parent' and cost hash table g.
         Called when new goal is given
         '''
+        mutex.acquire() 
         # Need to find the nearest cell in grid
         ind = get_index(self.goalPoint[0], self.goalPoint[1], self.grid_size, self.grid_dim)
         goalFilt = get_world(ind[0], ind[1], self.grid_size, self.grid_dim)
@@ -217,7 +220,7 @@ class PathPlannerNode:
         print("GOT A NEW PLAN in %f secs" % finishTime)
 
         self.pathGlobalGen = True
-
+        mutex.release()
 
     # ========== Callback functions below ============    
 
@@ -265,8 +268,8 @@ class PathPlannerNode:
         self.minY = self.origin[1]
         self.maxY = msg.info.resolution * msg.info.height + self.origin[1] - 1
         
-         # Set all unknowns (-1) to occupied (100)
-        self.sgrid[(self.sgrid==-1)] = 100
+        # Set all unknowns (-1) to occupied (100)
+        #self.sgrid[(self.sgrid==-1)] = 100
 
         # ================== Consider Rebinning here ========================#
         
@@ -277,7 +280,7 @@ class PathPlannerNode:
         
         newRes = 1
         ksize = np.round(newRes/msg.info.resolution).astype(int)
-        self.sgrid = pooling(self.sgrid, (ksize, ksize), pad=False)
+        self.sgrid = pooling(self.sgrid, (ksize, ksize), pad=True)
 
         # store some pertinent values for reuse
         self.grid_dim = (self.minX, self.maxX, self.minY, self.maxY)

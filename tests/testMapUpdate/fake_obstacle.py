@@ -69,8 +69,8 @@ class FakeObstacleNode:
 
         # Each time we create an obstacle, it gets pushed back to a global array
         #obstacle1 = FakeObstacles(100, -80, 134, 25, 25, 1)     # Moving left/right
-        obstacle2 = FakeObstacles(42, -25, 2, 10, 10, 1)        # Moving up/down
-        #obstacle3 = FakeObstacles(110, -80, 10, 20, 20, 1)      # Stationary / POP-UP
+        #obstacle2 = FakeObstacles(486, 119, 2, 10, 10, 1)        # House Pop/up
+        obstacle3 = FakeObstacles(110, -80, 5, 5, 5, 1)      # Bridge / POP-UP
 
         initTime = rospy.get_time()
         while not rospy.is_shutdown():
@@ -79,8 +79,8 @@ class FakeObstacleNode:
             #self.use_motion_model_x(obstacle1, timeNow, 10, 25)
             #self.use_motion_model_y(obstacle2, timeNow, 10, 25)
 
-            self.pop_up(obstacle2, timeNow, 45)
-            #self.pop_up(obstacle3, timeNow, 10)
+            #self.pop_up(obstacle2, timeNow, 25)
+            self.pop_up(obstacle3, timeNow, 25)
 
             self.objPub.publish(return_object_array())
             rate.sleep()

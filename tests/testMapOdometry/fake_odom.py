@@ -15,9 +15,16 @@ while not rospy.is_shutdown():
     odomMsg.header.stamp = rospy.get_rostime()  
     odomMsg.header.frame_id = "husky/odom"  #frame of pose
     odomMsg.child_frame_id = "husky/base"   #frame of twist  
+   
+    # House locations
+    #odomMsg.pose.pose.position.x = 537.62415508
+    #odomMsg.pose.pose.position.y = 69.8668
+    #odomMsg.pose.pose.position.x = 530.62415508
+    #odomMsg.pose.pose.position.y = 103.8668
     
-    odomMsg.pose.pose.position.x = 2
-    #odomMsg.pose.pose.position.y = -94.39635
+    # Bridge
+    #odomMsg.pose.pose.position.x = 0 
+    #odomMsg.pose.pose.position.y = 0
 
     pubOdom.publish(odomMsg)
     rate.sleep()

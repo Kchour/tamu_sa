@@ -7,7 +7,7 @@
   <node pkg="tamu_sa" type="fake_obstacle.py" name="fake_obstacle_node"/>
 
   <!-- ================== Run Path Planing Node =================--> 
-  <!--node pkg = "tamu_sa" type="path_planner_node.py" name="path_planner_node" /-->
+  <node pkg = "tamu_sa" type="path_planner_node.py" name="path_planner_node" />
 
 
 </launch>

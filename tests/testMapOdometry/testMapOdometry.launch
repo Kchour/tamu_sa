@@ -1,7 +1,8 @@
 <launch>
   
   <!-- ================== map_server to publish map ====== --> 
-  <node type="map_server" name="map_server_node_full" pkg="map_server" args="$(find tamu_sa)/map/topright_house.yaml">
+  <!--node type="map_server" name="map_server_node_full" pkg="map_server" args="$(find tamu_sa)/map/topright_house_final.yaml"-->
+  <node type="map_server" name="map_server_node_full" pkg="map_server" args="$(find tamu_sa)/map/mymap.yaml">
 	  <!--remap from="map" to="/husky/global_planner/costmap/costmap"/-->
 	  <!--remap from="map" to="/husky/local_point_cloud_cache/renderers/recent_map"/-->
 	  <remap from="map" to="test/map"/>
