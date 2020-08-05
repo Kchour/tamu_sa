@@ -123,7 +123,6 @@ class MyGraph:
         # Create a list of edges containing v
         edgeList = [key for key, val in self.edge_dict.items() if v in key]
 
-
         # Go through each tuple in test2 and select neighbors 
         neighs  = [node for edge in edgeList for node in edge if node != v]
 

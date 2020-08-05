@@ -3,7 +3,10 @@
 from .search_utils import PriorityQueue
 from tamu_sa.graphs.grid_utils import get_index
 from tamu_sa.graphs.grid_utils import get_world
-import matplotlib.pyplot as plt
+
+from tamu_sa import run_config as rc
+if rc.visualize:
+    import matplotlib.pyplot as plt
 import numpy as np
 import time
 

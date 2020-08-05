@@ -102,20 +102,29 @@ def path_length(path):
     dist_ = sum(hyp_)
     return dist_
 
-''' example heuristic functions '''
+# ''' example heuristic functions '''
 
-def heuristic(self, a, b, type_='manhattan'):
-    (x1, y1) = a
-    (x2, y2) = b
-    if type_ == 'manhattan':
-        return abs(x1 - x2) + abs(y1 - y2)
-    elif type_ == 'euclidean':
-        v = [x2 - x1, y2 - y1]
-        return np.hypot(v[0], v[1])
-    elif type_ == 'diagonal_uniform':
-        return max(abs(x1 - x2), abs(y1 - y2))
-    elif type_ == 'diagonal_nonuniform':
-        dmax = max(abs(x1 - x2), abs(y1 - y2))
-        dmin = min(abs(x1 - x2), abs(y1 - y2))
-        return 1.414*dmin + (dmax - dmin)
+# def heuristic(self, a, b, type_='manhattan'):
+#     (x1, y1) = a
+#     (x2, y2) = b
+#     if type_ == 'manhattan':
+#         return abs(x1 - x2) + abs(y1 - y2)
+#     elif type_ == 'euclidean':
+#         v = [x2 - x1, y2 - y1]
+#         return np.hypot(v[0], v[1])
+#     elif type_ == 'diagonal_uniform':
+#         return max(abs(x1 - x2), abs(y1 - y2))
+#     elif type_ == 'diagonal_nonuniform':
+#         dmax = max(abs(x1 - x2), abs(y1 - y2))
+#         dmin = min(abs(x1 - x2), abs(y1 - y2))
+#         return 1.414*dmin + (dmax - dmin)
     
+# =================== Pairwise L2 Distance ====================
+''' TODO Compute pairwise distance between two sets of vectors '''
+def compute_l2(A, B):
+    '''
+    <A> is m x p array (each row is a p-vector)
+    <B> is m x n array ()
+    returns <C> :=   
+    '''
+    print("wip")

@@ -1,0 +1,16 @@
+<launch>
+    
+    <!-- ===================== LOAD MAP ======================-->
+    <include file="$(find tamu_sa)/tests/testMap/testMap.launch" />
+
+    <!-- ===================== Load Fake Odom launch ======================-->
+    <include file="$(find tamu_sa)/tests/testOdometry/testOdom.launch" />
+
+    <!-- ===================== LOAD Obstacles launch======================-->
+    <include file="$(find tamu_sa)/tests/testObstacles/testObstacles.launch" />
+    
+    <!-- =================== Run path planner ================-->
+    <include file="$(find tamu_sa)/launch/tamu_sa.launch" />
+
+
+<launch>

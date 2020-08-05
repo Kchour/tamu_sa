@@ -7,7 +7,11 @@ However, each class instance will have its own set of data
 
 Inspired by: https://stackoverflow.com/questions/40126176/fast-live-plotting-in-matplotlib-pyplot
 '''
-import matplotlib.pyplot as plt
+from tamu_sa import run_config as rc
+if rc.visualize:
+    import matplotlib.pyplot as plt
+    from matplotlib.animation import FFMpegWriter
+
 import time
 
 class Animate:
@@ -96,7 +100,6 @@ class Animate:
         #fig.canvas.mpl_disconnect(cid)
 
 
-from matplotlib.animation import FFMpegWriter
 ''' Helper class to help save animations '''
 class SaveAnimation:
     def __init__(self, figNumber, outfile):      

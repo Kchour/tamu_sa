@@ -1,0 +1,11 @@
+<launch>
+  
+  <!-- ================== Run Fake_obstacles ================--> 
+  <node pkg="tamu_sa" type="fake_obstacle.py" name="fake_obstacle_node"/>
+
+
+  <!-- ================== RUN THE TEST ======================-->
+  <!-- <test time-limit="15" test-name="verify_obstacles_test" pkg="tamu_sa" type="testObs.test" /> -->
+  <test test-name="verify_obstacles_test" pkg="tamu_sa" type="testObs.test" />
+
+</launch>

@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+PKG = 'tamu_sa'
+NAME = 'verify_obstacles_test'
+
+import sys, time, unittest
+import rospy, rostest
+from tamu_sa.msg import ObjectDetectArray
+import pdb
+
+## A sample python unit test
+class TestVerifyObstacles(unittest.TestCase):
+    def __init__(self, *args):
+        super(TestVerifyObstacles, self).__init__(*args)
+        self.cb = False
+        self.success = False
+
+    def callback(self, data):
+        self.data = data
+        self.cb = True
+        rospy.loginfo("Callback success")
+        # pdb.set_trace()
+        if len(self.data.detections) == 4:
+            self.success = True
+
+    # test to ensure there are 'n' number of obstacles
+    def test_verify_obstacles(self): # only functions with 'test_'-prefix will be run!
+        rospy.init_node(NAME, anonymous=True)
+        rospy.Subscriber("/test/object_detection", ObjectDetectArray, self.callback)
+        rate = rospy.Rate(15)
+        timeout_t = time.time() + 10.0 # 10 seconds
+        while not rospy.is_shutdown() and not self.success and time.time() < timeout_t:
+            rate.sleep()
+        self.assert_(self.success)
+
+if __name__ == '__main__':
+    print("RUNNING {}".format(NAME))
+    rostest.rosrun(PKG, NAME, TestVerifyObstacles, sys.argv)

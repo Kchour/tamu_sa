@@ -1,0 +1,29 @@
+<launch>
+  
+  <!-- ================== Run testMapOdometry ===================-->
+  <!-- <include file="$(find tamu_sa)/tests/testMapOdometry/testMapOdometry.launch" /> -->
+
+  <!-- ================== Run testMapUpdate =====================-->
+  <!-- <node pkg="tamu_sa" type="fake_obstacle.py" name="fake_obstacle_node"/> -->
+
+  <!-- ================== Run Path Planing Node =================--> 
+  <node pkg = "tamu_sa" type="path_planner_node.py" name="path_planner_node" />
+
+  <!-- =================== rviz ======== -->
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tamu_sa)/rviz/config_file1.rviz" cwd="node"/>
+
+  <!-- ================== RELAY TOPICS AS NEEDED ================ -->
+  <arg name="relay_topics" value="false" />
+
+  <group if="$(arg relay_topics)">
+    <node pkg="topic_tools" type="relay" name="incoming_map_relay" args="/test/map /test/map" />
+    <node pkg="topic_tools" type="relay" name="goal_relay" args="move_base_simple/goal move_base_simple/goal" />
+
+    <node pkg="topic_tools" type="relay" name="odom_relay" args="/test/odom /unity_command/ground_truth/cherokee/odom" />
+    <node pkg="topic_tools" type="relay" name="fallback_odom_relay" args="/fallback_odom /unity_command/cherokee/TrueState/odom" />
+    <node pkg="topic_tools" type="relay" name="pathplan_relay" args="/test/plan /cherokee/planIncoming" />
+    <node pkg="topic_tools" type="relay" name="pub_map_relay" args="/test/full_map /test/full_map" />
+    <node pkg="topic_tools" type="relay" name="object_detect_relay" args="/test/object_detection	/sa_to_costmap" />
+  </group>
+
+</launch>  
