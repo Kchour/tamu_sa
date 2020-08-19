@@ -1,0 +1,28 @@
+actions: []
+authors: ''
+brief: ''
+bugtracker: ''
+depends:
+- nav_msgs
+- catkin
+- roscpp
+- python-catkin-pkg
+- sensor_msgs
+- message_runtime
+- std_msgs
+- tf
+- rostest
+- rospy
+- rosunit
+- message_generation
+- python-numpy
+description: The tamu_sa package
+license: TODO
+maintainers: kenny <kenny@todo.todo>
+msgs:
+- ObjectDetectArray
+- ObjectDetect
+package_type: package
+repo_url: ''
+srvs: []
+url: ''
