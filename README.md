@@ -22,7 +22,7 @@ the planner "latch" subscribe to it
 - Don't forget to add `<build_depend>rostest</build_depend>` to package.xml
 - Also add `<test_depend>rosunit</test_depend>`
 - Auto run tests by adding to CMakelists.txt`catkin_add_nosetests(path/to/my_test.py)`
-- More info on unittest: [link][http://wiki.ros.org/unittest]
+- More info on unittest: [link](http://wiki.ros.org/unittest)
 - Also read [link](http://wiki.ros.org/rostest/Writing)
 - use `reset` after abnormal exit from `pdb`
 
