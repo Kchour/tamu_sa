@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation &#8212; tamu_sa 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tamu_sa" href="_autosummary/tamu_sa.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Clone this repo to your catkin workspace, i.e. <code class="docutils literal notranslate"><span class="pre">../catkin_example/src/</span></code></p></li>
+<li><p>Build with catkin tools: <code class="docutils literal notranslate"><span class="pre">catkin</span> <span class="pre">build</span></code></p></li>
+<li><p>Source your workspace: <code class="docutils literal notranslate"><span class="pre">source</span></code>../catkin_example/devel/setup.bash`</p></li>
+</ul>
+</div>
+<div class="section" id="running-tests">
+<h1>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Do <code class="docutils literal notranslate"><span class="pre">rostest</span> <span class="pre">your_package_name</span> <span class="pre">your_test.launch</span></code> to run a particular test</dt><dd><p>i.e. <code class="docutils literal notranslate"><span class="pre">rostest</span> <span class="pre">tamu_sa</span> <span class="pre">testObstacles.launch</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>You can also go directly to a test folder and invoke a unittest directly</dt><dd><p>i.e. <code class="docutils literal notranslate"><span class="pre">rostest</span> <span class="pre">testObstacles.launch</span></code></p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="todo">
+<h1>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Make tests automatic via a test suite or to run upon <code class="docutils literal notranslate"><span class="pre">catkin</span> <span class="pre">build</span></code></p></li>
+<li><p>Remove folders in <code class="docutils literal notranslate"><span class="pre">tests</span></code>, seems redundant</p></li>
+<li><p>Test package for phoenix indepedence</p></li>
+<li><p>Add additional unit tests (test) for more coverage</p></li>
+<li><p>Separate map-updating from path-planning node: Create a “map-update” node and let
+the planner “latch” subscribe to it</p></li>
+<li><p>Figure out how to use sphinx with rosdoc_lite</p></li>
+</ul>
+</div>
+<div class="section" id="misc-notes">
+<h1>Misc Notes<a class="headerlink" href="#misc-notes" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Don’t forget to add <code class="docutils literal notranslate"><span class="pre">&lt;build_depend&gt;rostest&lt;/build_depend&gt;</span></code> to package.xml</p></li>
+<li><p>Also add <code class="docutils literal notranslate"><span class="pre">&lt;test_depend&gt;rosunit&lt;/test_depend&gt;</span></code></p></li>
+<li><p>Auto run tests by adding to CMakelists.txt<code class="docutils literal notranslate"><span class="pre">catkin_add_nosetests(path/to/my_test.py)</span></code></p></li>
+<li><p>More info on unittest: <a class="reference external" href="http://wiki.ros.org/unittest">link</a></p></li>
+<li><p>Also read <a class="reference external" href="http://wiki.ros.org/rostest/Writing">link</a></p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">reset</span></code> after abnormal exit from <code class="docutils literal notranslate"><span class="pre">pdb</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="debugging-your-tests">
+<h1>Debugging your tests<a class="headerlink" href="#debugging-your-tests" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>use <code class="docutils literal notranslate"><span class="pre">rostest</span> <span class="pre">--text</span> <span class="pre">your_test.launch</span></code> to debug outputs, even the debugger can be used</p></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">tamu_sa</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#running-tests">Running Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#todo">TODO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#misc-notes">Misc Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#debugging-your-tests">Debugging your tests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tamu_sa.html">tamu_sa</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">&lt;no title&gt;</a></li>
+      <li>Next: <a href="_autosummary/tamu_sa.html" title="next chapter">tamu_sa</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, kenny.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/readme_link.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -22,6 +22,8 @@ maintainers: kenny <kenny@todo.todo>
 msgs:
 - ObjectDetectArray
 - ObjectDetect
+- ObjectDetectArray
+- ObjectDetect
 package_type: package
 repo_url: ''
 srvs: []

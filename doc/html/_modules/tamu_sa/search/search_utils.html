@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tamu_sa.search.search_utils &#8212; tamu_sa 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tamu_sa.search.search_utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39; search utils &#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="sd">&#39;&#39;&#39; custom data structures for search algorithms. Import methods are:</span>
+<span class="sd">    :empty: True if empty, otherwise False</span>
+<span class="sd">    :put:   adds a new node to the data structure</span>
+<span class="sd">    :get:   returns a node from data structure (based on some criteria)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># Template class for defining your own data structures for using search algorithm</span>
+<div class="viewcode-block" id="CustomQueue"><a class="viewcode-back" href="../../../_autosummary/tamu_sa.search.search_utils.CustomQueue.html#tamu_sa.search.search_utils.CustomQueue">[docs]</a><span class="k">class</span> <span class="nc">CustomQueue</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; self.elements = &#39;&#39;&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; return len(self.elements) == 0 &#39;&#39;&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; define stuff &#39;&#39;&#39;</span>
+    
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; define stuff &#39;&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="Queue"><a class="viewcode-back" href="../../../_autosummary/tamu_sa.search.search_utils.Queue.html#tamu_sa.search.search_utils.Queue">[docs]</a><span class="k">class</span> <span class="nc">Queue</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39; First In First Out &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">deque</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span></div>
+
+
+<span class="c1"># class PriorityQueue:</span>
+<span class="c1">#     def __init__(self):</span>
+<span class="c1">#         self.elements = {}</span>
+
+<span class="c1">#     def empty(self):</span>
+<span class="c1">#         return len(self.elements) == 0</span>
+
+<span class="c1">#     def put(self, item, priority):</span>
+<span class="c1">#         self.elements[item] = priority</span>
+
+<span class="c1">#     def get(self):</span>
+<span class="c1">#         # Iterate through dictionary to find the item with the best priority</span>
+<span class="c1">#         best_item, best_priority = None, None</span>
+<span class="c1">#         for item, priority in self.elements.items():</span>
+<span class="c1">#             if best_priority is None or priority &lt; best_priority:</span>
+<span class="c1">#                 best_item, best_priority = item, priority</span>
+
+<span class="c1">#         # Remove the best item from the OPEN LIST</span>
+<span class="c1">#         del self.elements[best_item]</span>
+
+<span class="c1">#         # return</span>
+<span class="c1">#         return best_item</span>
+
+
+<span class="sd">&#39;&#39;&#39; Priority Queue with heapq. Thanks RedBlob &#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">heapq</span>
+
+<div class="viewcode-block" id="PriorityQueue"><a class="viewcode-back" href="../../../_autosummary/tamu_sa.search.search_utils.PriorityQueue.html#tamu_sa.search.search_utils.PriorityQueue">[docs]</a><span class="k">class</span> <span class="nc">PriorityQueue</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">priority</span><span class="p">):</span>
+        <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">,</span> <span class="p">(</span><span class="n">priority</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="sd">&#39;&#39;&#39; post-processing utility functions&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="reconstruct_path"><a class="viewcode-back" href="../../../_autosummary/tamu_sa.search.search_utils.reconstruct_path.html#tamu_sa.search.search_utils.reconstruct_path">[docs]</a><span class="k">def</span> <span class="nf">reconstruct_path</span><span class="p">(</span><span class="n">parents</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">):</span>
+    <span class="c1"># parents are now in index</span>
+    
+    <span class="n">current</span> <span class="o">=</span> <span class="n">goal</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">current</span> <span class="o">!=</span> <span class="n">start</span><span class="p">:</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">parents</span><span class="p">[</span><span class="n">current</span><span class="p">]</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s1">&#39;forward&#39;</span><span class="p">:</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="path_length"><a class="viewcode-back" href="../../../_autosummary/tamu_sa.search.search_utils.path_length.html#tamu_sa.search.search_utils.path_length">[docs]</a><span class="k">def</span> <span class="nf">path_length</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="c1"># compute costs</span>
+    <span class="n">diff_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">hyp_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">diff_</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">diff_</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">dist_</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">hyp_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dist_</span></div>
+
+<span class="c1"># &#39;&#39;&#39; example heuristic functions &#39;&#39;&#39;</span>
+
+<span class="c1"># def heuristic(self, a, b, type_=&#39;manhattan&#39;):</span>
+<span class="c1">#     (x1, y1) = a</span>
+<span class="c1">#     (x2, y2) = b</span>
+<span class="c1">#     if type_ == &#39;manhattan&#39;:</span>
+<span class="c1">#         return abs(x1 - x2) + abs(y1 - y2)</span>
+<span class="c1">#     elif type_ == &#39;euclidean&#39;:</span>
+<span class="c1">#         v = [x2 - x1, y2 - y1]</span>
+<span class="c1">#         return np.hypot(v[0], v[1])</span>
+<span class="c1">#     elif type_ == &#39;diagonal_uniform&#39;:</span>
+<span class="c1">#         return max(abs(x1 - x2), abs(y1 - y2))</span>
+<span class="c1">#     elif type_ == &#39;diagonal_nonuniform&#39;:</span>
+<span class="c1">#         dmax = max(abs(x1 - x2), abs(y1 - y2))</span>
+<span class="c1">#         dmin = min(abs(x1 - x2), abs(y1 - y2))</span>
+<span class="c1">#         return 1.414*dmin + (dmax - dmin)</span>
+    
+<span class="c1"># =================== Pairwise L2 Distance ====================</span>
+<span class="sd">&#39;&#39;&#39; TODO Compute pairwise distance between two sets of vectors &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="compute_l2"><a class="viewcode-back" href="../../../_autosummary/tamu_sa.search.search_utils.compute_l2.html#tamu_sa.search.search_utils.compute_l2">[docs]</a><span class="k">def</span> <span class="nf">compute_l2</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    &lt;A&gt; is m x p array (each row is a p-vector)</span>
+<span class="sd">    &lt;B&gt; is m x n array ()</span>
+<span class="sd">    returns &lt;C&gt; :=   </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;wip&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">tamu_sa</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html#running-tests">Running Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html#todo">TODO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html#misc-notes">Misc Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html#debugging-your-tests">Debugging your tests</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/tamu_sa.html">tamu_sa</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, kenny.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
